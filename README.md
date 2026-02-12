@@ -345,7 +345,7 @@ Rich tab titles and pane management. Dynamic status lines show learning signals,
 │  Do you want a complete, working PAI system right now?          │
 │                                                                 │
 │     YES ──────────► Option 1: Full Release Install              │
-│                     (Complete .claude/ directory, ~5 min)       │
+│                     (Complete ~/.pai/ directory, ~5 min)        │
 │                                                                 │
 │     NO, I want to customize or learn the system                 │
 │         │                                                       │
@@ -361,7 +361,7 @@ Rich tab titles and pane management. Dynamic status lines show learning signals,
 
 ### Option 1: Full Release Install (Recommended)
 
-> **This is the fastest path to a working PAI system.** You get a complete, pre-configured `.claude/` directory with all infrastructure packs already installed.
+> **This is the fastest path to a working PAI system.** You get a complete, pre-configured `~/.pai/` directory with all infrastructure packs already installed. This supports both **Claude Code** and **Gemini CLI**.
 
 ```bash
 # Clone the repo
@@ -371,11 +371,12 @@ cd PAI/Releases/v2.5
 # Back up your existing Claude Code configuration (if any)
 [ -d ~/.claude ] && mv ~/.claude ~/.claude-backup-$(date +%Y%m%d)
 
-# Copy the complete PAI installation
-cp -r .claude ~/
+# Copy to Shared Core location
+mkdir -p ~/.pai
+cp -r .claude/* ~/.pai/
 
 # Run the configuration wizard
-cd ~/.claude && bun run INSTALL.ts
+cd ~/.pai && bun run INSTALL.ts
 ```
 
 **The wizard will:**
@@ -428,7 +429,7 @@ Install individual packs by giving them to your DA:
 3. **Ask your DA to install it:**
 
 ```
-Install this pack into my system. Use PAI_DIR="~/.claude"
+Install this pack into my system. Use PAI_DIR="~/.pai"
 and DA="MyAI". Set up the hooks, save the code, and verify it works.
 ```
 

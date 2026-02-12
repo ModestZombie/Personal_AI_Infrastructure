@@ -63,7 +63,8 @@ Ask your principal these questions to understand their environment:
 - Other / Custom
 
 **Question 2: Where should PAI be installed?**
-- Default: `~/.claude` (recommended for Claude Code)
+- Default: `~/.pai` (Recommended - Shared Core for Claude & Gemini)
+- Legacy: `~/.claude` (Claude Code only)
 - Custom location (ask them to specify)
 
 **Question 3: What's your experience level with AI tools?**
@@ -81,9 +82,9 @@ This helps you calibrate how much explanation to provide.
 PAI offers three installation paths. Explain each and help them choose:
 
 **Option A: Full Release Install (Recommended)**
-> The fastest path to a working system. You get a complete, pre-configured `.claude/` directory with all infrastructure packs already installed.
+> The fastest path to a working system. You get a complete, pre-configured `~/.pai/` directory with all infrastructure packs already installed.
 >
-> Best for: First-time users, fresh setups, or when you want PAI working immediately.
+> Best for: First-time users, fresh setups, or when you want PAI working immediately for both Claude and Gemini.
 >
 > [See Releases/v2.4/README.md](Releases/v2.4/README.md)
 
@@ -193,16 +194,31 @@ cd PAI/Releases/v2.4
 # Back up your existing Claude Code configuration (if any)
 [ -d ~/.claude ] && mv ~/.claude ~/.claude-backup-$(date +%Y%m%d)
 
-# Copy the complete PAI installation
-cp -r .claude ~/
+# Copy the complete PAI installation to Shared Core
+mkdir -p ~/.pai
+cp -r .claude/* ~/.pai/
 
 # Run the configuration wizard
-cd ~/.claude && bun run PAIInstallWizard.ts
+cd ~/.pai && bun run PAIInstallWizard.ts
 ```
 
 The wizard will ask for your name, DA name, timezone, and voice preferences. After completion, restart Claude Code to activate hooks.
 
 **Shell support:** Works with both bash and zsh. The wizard auto-detects your shell and writes to the appropriate config file.
+
+### 🚀 Migration: Move to Shared Core (Claude + Gemini)
+
+If you have an existing PAI installation in `~/.claude`, you can migrate to the new Shared Core structure (`~/.pai`) which supports both Claude Code and Gemini CLI.
+
+```bash
+# Run the migration tool from the repo root
+bun run Tools/migrate_to_shared_core.ts
+```
+
+This will:
+1. Move your skills, hooks, and memory to `~/.pai`
+2. Update Claude Code to use the new location
+3. Configure Gemini CLI to use PAI hooks
 
 ### Alternative: Bundle + Manual Packs
 
