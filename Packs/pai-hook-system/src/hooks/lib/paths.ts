@@ -11,6 +11,7 @@
 
 import { homedir } from 'os';
 import { join } from 'path';
+import { existsSync } from 'fs';
 
 /**
  * Expand shell variables in a path string
@@ -27,13 +28,21 @@ export function expandPath(path: string): string {
 
 /**
  * Get the PAI directory (expanded)
- * Priority: PAI_DIR env var (expanded) → ~/.claude
+ * Priority:
+ * 1. PAI_DIR env var (expanded)
+ * 2. ~/.pai (if exists)
+ * 3. ~/.claude (fallback)
  */
 export function getPaiDir(): string {
   const envPaiDir = process.env.PAI_DIR;
 
   if (envPaiDir) {
     return expandPath(envPaiDir);
+  }
+
+  const paiPath = join(homedir(), '.pai');
+  if (existsSync(paiPath)) {
+    return paiPath;
   }
 
   return join(homedir(), '.claude');
